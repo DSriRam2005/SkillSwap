@@ -45,3 +45,8 @@ const loginUser = async (email, password) => {
     console.error("Error logging in:", error.message);
   }
 };
+auth.onAuthStateChanged((user) => {
+  if (user) {
+    window.location.href = "dashboard.html";
+  }
+});
