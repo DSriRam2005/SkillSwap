@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkillSwap - Dashboard</title>
+    <script type="module" src="dashboard.js"></script>
+</head>
+<body>
+    <h1>Welcome to SkillSwap</h1>
+    <p id="userInfo">Loading user data...</p>
+    <button id="logoutBtn">Logout</button>
+
+    <script type="module">
+        import { logoutUser } from "./auth.js";
+        import { getFirestore, doc, getDoc } from "firebase/firestore";
+        import { getAuth, onAuthStateChanged } from "firebase/auth";
+
+        const auth = getAuth();
+        const db = getFirestore();
+
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                const userDoc = await getDoc(doc(db, "users", user.uid));
+                if (userDoc.exists()) {
+                    document.getElementById("userInfo").innerText = 
+                        `Hello, ${userDoc.data().name}!`;
+                }
+            } else {
+                window.location.href = "index.html"; // Redirect if not logged in
+            }
+        });
+
+        document.getElementById("logoutBtn").addEventListener("click", logoutUser);
+    </script>
+</body>
+</html>
