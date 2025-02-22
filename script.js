@@ -1,6 +1,9 @@
 import { initializeApp } from "firebase/app";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
-import { getFirestore, doc, setDoc } from "firebase/firestore";
+import { 
+  getAuth, createUserWithEmailAndPassword, 
+  signInWithEmailAndPassword, signOut, onAuthStateChanged 
+} from "firebase/auth";
+import { getFirestore, doc, setDoc, getDoc } from "firebase/firestore";
 
 // Firebase Configuration
 const firebaseConfig = {
@@ -13,19 +16,19 @@ const firebaseConfig = {
   measurementId: "G-D5C0EEFRPP"
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
+
+// Sign-Up Function
 const signUpUser = async (email, password, name) => {
   try {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
 
-    // Store additional user info in Firestore
+    // Store user details in Firestore
     await setDoc(doc(db, "users", user.uid), {
       name: name,
       email: user.email,
@@ -33,20 +36,43 @@ const signUpUser = async (email, password, name) => {
     });
 
     console.log("User signed up:", user);
+    window.location.href = "dashboard.html"; // Redirect to dashboard
   } catch (error) {
     console.error("Error signing up:", error.message);
   }
 };
+
+// Login Function
 const loginUser = async (email, password) => {
   try {
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
     console.log("User logged in:", userCredential.user);
+    window.location.href = "dashboard.html"; // Redirect to dashboard
   } catch (error) {
     console.error("Error logging in:", error.message);
   }
 };
-auth.onAuthStateChanged((user) => {
+
+// Logout Function
+const logoutUser = async () => {
+  try {
+    await signOut(auth);
+    console.log("User logged out");
+    window.location.href = "index.html"; // Redirect to login page
+  } catch (error) {
+    console.error("Error logging out:", error.message);
+  }
+};
+
+// Check User Authentication State
+onAuthStateChanged(auth, (user) => {
   if (user) {
-    window.location.href = "dashboard.html";
+    console.log("User is logged in:", user);
+  } else {
+    console.log("No user logged in");
   }
 });
+
+// Export functions
+export { signUpUser, loginUser, logoutUser };
+
