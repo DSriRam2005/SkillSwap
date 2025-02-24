@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Response Login</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta charset="UTF-8">
+    <script src="main.js" defer type="module"></script>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .show-password-icon {
+            cursor: pointer;
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        .input-wrapper {
+            position: relative;
+        }
+    </style>
+</head>
+<body>
+    <section>
+        <div class="image">
+            <img src="pic.png" alt="background image">
+        </div>
+        <div class="content">
+            <div class="form">
+                <h2>login</h2>
+                <form id="login-form">
+                    <div class="input">
+                        <span>User Name</span>
+                        <input type="text" name="username" required>
+                    </div>
+                    <div class="input-wrapper">
+                        <div class="input">
+                            <span>Password</span>
+                            <input type="password" name="password" id="password" required>
+                            <i class="show-password-icon" id="show-password-icon">&#128065;</i>
+                        </div>
+                        <div class="input">
+                            <a href="forgot-password.html">Forgot Password?</a>
+                        </div>
+                    </div>
+                    <div class="remember-me">
+                        <label>
+                            <input type="checkbox" name="remember-me">
+                            <span>Remember me</span>
+                        </label>
+                    </div>
+                    <div class="input">
+                        <input type="submit" value="submit" id="submit">
+                    </div>
+                    <div class="input">
+                        <p>Don't have an account? <a href="signup.html">Sign Up</a></p>
+                    </div>
+                    <div class="input">
+                        <button type="button" id="google-login-btn" class="google-button">
+                            <i class="fab fa-google"></i> Login with Google
+                        </button>
+                    </div>
+                </form>
+                <h3>Login With Social Media</h3>
+                <ul class="social-media">
+                    <li><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQrIbiofxGclX20CWBDtpmjOcbbuqEJS6PrSQ&s"></li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    <script>
+        document.getElementById('show-password-icon').addEventListener('click', function() {
+            const passwordInput = document.getElementById('password');
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                this.innerHTML = '&#128064;'; // Change icon to "eye with slash"
+            } else {
+                passwordInput.type = 'password';
+                this.innerHTML = '&#128065;'; // Change icon to "eye"
+            }
+        });
+    </script>
+</body>
+</html>
